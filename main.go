@@ -4,17 +4,25 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"path/filepath"
 	"regexp"
 	"time"
 )
 
 func main() {
+	env := os.Getenv("GO_ENV")
+	if env == "" {
+		env = "dev"
+	}
+	conf = confs[env]
+	if conf == nil {
+		log.Fatal("无效的环境变量")
+	}
+
 	http.HandleFunc("/", router)
 	log.Fatal(http.ListenAndServe(":8000", nil))
 }
-
-const blogPath = "/Users/liqiang/Documents/code/programming_note"
 
 // 文章详情页路由正则
 var postRegexp = regexp.MustCompile(`^/post/(2\d{7}(\w|-)+)\.html$`)
@@ -56,7 +64,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 	if match := postRegexp.MatchString(path); match {
 		name := postRegexp.FindStringSubmatch(path)[1]
 		filename := name + ".md"
-		fPath := filepath.Join(blogPath, filename)
+		fPath := filepath.Join(conf.blogMdPath, filename)
 		content, err := getPostHtml(fPath)
 		if err == nil {
 			w.Write(content)

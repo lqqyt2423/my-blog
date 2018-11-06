@@ -38,7 +38,7 @@ var postsTemplate = template.Must(template.New("index.gtpl").
 	ParseFiles("index.gtpl"))
 
 func getIndexHtml() ([]byte, error) {
-	files, err := ioutil.ReadDir(blogPath)
+	files, err := ioutil.ReadDir(conf.blogMdPath)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +82,7 @@ func getIndexHtml() ([]byte, error) {
 }
 
 func getPost(filename string, c chan<- postRes) {
-	path := filepath.Join(blogPath, filename)
+	path := filepath.Join(conf.blogMdPath, filename)
 	file, err := os.Open(path)
 	if err != nil {
 		c <- postRes{post: nil, err: err}
