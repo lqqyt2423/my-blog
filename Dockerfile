@@ -1,17 +1,14 @@
-FROM golang:1.11-alpine
-
+FROM golang:1.11
+RUN go get -d -v gopkg.in/russross/blackfriday.v2
 WORKDIR /go/src/blog
-
 COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
 
-RUN apk add --no-cache git mercurial \
-  && go get -d -v gopkg.in/russross/blackfriday.v2 \
-  && apk del git mercurial
-
-RUN go install -v ./
-
+FROM alpine:latest
+RUN apk --no-cache add ca-certificates
+WORKDIR /root
+COPY . .
+COPY --from=0 /go/src/blog/app .
 ENV GO_ENV=prod
-
-CMD ["blog"]
-
+CMD ["./app"]
 EXPOSE 8000
