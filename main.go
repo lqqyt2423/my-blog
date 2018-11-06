@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -39,6 +39,8 @@ var postTitleRegexp = regexp.MustCompile(`^\s*?#\s*`)
 // 文章日期正则
 var postDateRegexp = regexp.MustCompile(`2\d{7}`)
 
+var notFoundTemplate = template.Must(template.ParseFiles("template/base.tmpl", "template/404.tmpl"))
+
 func router(w http.ResponseWriter, req *http.Request) {
 	path := req.URL.Path
 	status := http.StatusOK
@@ -47,7 +49,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 	defer func(start time.Time) {
 		cost := time.Since(start)
 		cost = cost.Round(time.Millisecond)
-		log.Printf("%v %v %v %v\n", req.Method, path, status, cost)
+		log.Printf("%v %v %v %v\n", req.Method, req.URL, status, cost)
 	}(time.Now())
 
 	// 首页
@@ -73,10 +75,21 @@ func router(w http.ResponseWriter, req *http.Request) {
 		log.Println(err)
 	}
 
+	// search
+	if path == "/search" {
+		if q := req.URL.Query().Get("q"); q != "" {
+			content, err := getSearchHtml(q)
+			if err == nil {
+				w.Write(content)
+				return
+			}
+		}
+	}
+
 	// 404
 	status = http.StatusNotFound
 	w.WriteHeader(status)
-	fmt.Fprintf(w, "%v %v\n", status, http.StatusText(status))
+	notFoundTemplate.Execute(w, &struct{ Title string }{Title: "404"})
 }
 
 func timeFormat(t time.Time) string {

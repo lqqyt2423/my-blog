@@ -9,15 +9,16 @@ import (
 	"gopkg.in/russross/blackfriday.v2"
 )
 
-var postTemplate = template.Must(template.New("post.gtpl").
+var postTemplate = template.Must(template.New("base.tmpl").
 	Funcs(template.FuncMap{"format": timeFormat}).
-	ParseFiles("post.gtpl"))
+	ParseFiles("template/base.tmpl", "template/post.tmpl"))
 
 type Post struct {
 	Path    string
 	Title   string
 	Content template.HTML
 	Date    time.Time
+	score   int
 }
 
 func getPostHtml(path string) ([]byte, error) {
@@ -37,11 +38,16 @@ func getPostHtml(path string) ([]byte, error) {
 }
 
 func handleContent(data []byte) *Post {
+	title, content := getTitleAndContent(data)
+	content = blackfriday.Run(content)
+	return &Post{Title: string(title), Content: template.HTML(content)}
+}
+
+func getTitleAndContent(data []byte) ([]byte, []byte) {
 	data = bytes.TrimSpace(data)
 	arr := bytes.Split(data, []byte("\n"))
 	title := arr[0]
 	title = postTitleRegexp.ReplaceAll(title, []byte(""))
 	content := bytes.Join(arr[1:], []byte("\n"))
-	content = blackfriday.Run(content)
-	return &Post{Title: string(title), Content: template.HTML(content)}
+	return title, content
 }

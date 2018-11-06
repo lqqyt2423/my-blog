@@ -1,0 +1,8 @@
+{{define "CONTENT"}}
+{{range .Posts}}
+<p class="mono-font">
+  <span class="margin-right-10 gray">{{.Date | format}}</span>
+  <a href="/post/{{.Path}}">{{.Title}}</a>
+</p>
+{{end}}
+{{end}}

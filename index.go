@@ -33,9 +33,9 @@ type postRes struct {
 	err  error
 }
 
-var postsTemplate = template.Must(template.New("index.gtpl").
+var postsTemplate = template.Must(template.New("base.tmpl").
 	Funcs(template.FuncMap{"format": timeFormat}).
-	ParseFiles("index.gtpl"))
+	ParseFiles("template/base.tmpl", "template/index.tmpl"))
 
 func getIndexHtml() ([]byte, error) {
 	files, err := ioutil.ReadDir(conf.blogMdPath)

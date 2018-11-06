@@ -44,9 +44,7 @@
 
   <div class="panel panel-default" id="content-wrapper">
     <div class="panel-body markdown-body" id="content">
-      <h1>{{.Title}}</h1>
-      <p class="gray mono-font small-font">日期：{{.Date | format}}</p>
-      {{.Content}}
+      {{template "CONTENT" .}}
     </div>
   </div>
 

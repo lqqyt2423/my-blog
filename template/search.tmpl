@@ -1,0 +1,12 @@
+{{define "CONTENT"}}
+<h4>{{.QueryWord}} 的搜索结果 —— 共 {{.Posts | len}} 篇</h4>
+<hr />
+{{range .Posts}}
+<p class="mono-font">
+  <span class="margin-right-10 gray">{{.Date | format}}</span>
+  <a href="/post/{{.Path}}">{{.Title}}</a>
+</p>
+{{else}}
+<p><a href="/">返回首页</a></p>
+{{end}}
+{{end}}
