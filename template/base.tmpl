@@ -10,7 +10,7 @@
 
   <style>
     #header-wrapper { margin: 0 auto; max-width: 1030px; }
-    #content-wrapper { margin: 0 auto; max-width: 1000px; min-height: 467px; }
+    #content-wrapper { margin: 0 auto; max-width: 1000px; min-height: 350px; }
     #footer { background-color: #2a2730; margin-top: 30px; padding: 20px 15px; color: #99979c; text-align: right; }
     #footer-wrapper { margin: 0 auto; max-width: 1000px; }
     #footer-wrapper a { color:#fff;  }
@@ -25,7 +25,7 @@
   </style>
 </head>
 <body>
-  <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default" id="header-nav">
     <div class="container-fluid" id="header-wrapper">
       <div class="navbar-header">
         <a class="navbar-brand" href="/">李强的博客</a>
@@ -57,5 +57,19 @@
     </div>
   </div>
 
+<script>
+  function changeContentHeight() {
+    const windowHeight = window.innerHeight;
+    const bodyHeight = document.body.clientHeight;
+    if (bodyHeight >= windowHeight) return;
+
+    const contentEle = document.getElementById('content-wrapper');
+    const contentHeight = contentEle.clientHeight;
+    const res = windowHeight - bodyHeight + contentHeight + 2;
+    contentEle.style.height = res + 'px';
+  }
+  window.addEventListener('load', changeContentHeight);
+  window.addEventListener('resize', changeContentHeight);
+</script>
 </body>
 </html>
