@@ -1,5 +1,5 @@
 {{define "CONTENT"}}
 <h1>{{.Title}}</h1>
-<p class="gray mono-font small-font">日期：{{.Date | format}}</p>
+<p class="gray mono-font small-font">{{.Date | format}} | {{.PageView}} views</p>
 {{.Content}}
 {{end}}

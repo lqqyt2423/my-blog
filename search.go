@@ -17,6 +17,7 @@ type Search struct {
 	Title     string
 	QueryWord string
 	Posts     []*Post
+	SiteView  int64
 }
 
 type SearchPosts []*Post
@@ -65,7 +66,8 @@ func getSearchHtml(q string) ([]byte, error) {
 	sort.Sort(posts)
 
 	buf := bytes.NewBuffer(nil)
-	err = searchTemplate.Execute(buf, &Search{Title: "搜索页", QueryWord: q, Posts: posts})
+	sv, _ := incView("")
+	err = searchTemplate.Execute(buf, &Search{Title: "搜索页", QueryWord: q, Posts: posts, SiteView: sv})
 	if err != nil {
 		return nil, err
 	}
