@@ -7,6 +7,7 @@ docker-compose build
 docker-compose up
 docker-compose down
 docker-compose -f docker-compose-prod.yml up
+docker-compose -f docker-compose-prod.yml up -d
 ```
 
 ## build
