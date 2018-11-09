@@ -16,3 +16,4 @@ services:
     image: redis:alpine
     volumes:
       - ./data:/data
+    restart: always
