@@ -12,7 +12,7 @@ var confs = map[string]*config{
 	},
 	"prod": &config{
 		blogMdPath:   "/root/programming_note",
-		redisAddress: ":6379",
+		redisAddress: "redis:6379",
 	},
 }
 

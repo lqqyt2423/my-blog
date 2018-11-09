@@ -1,5 +1,14 @@
 # README
 
+## docker-compose
+
+```
+docker-compose build
+docker-compose up
+docker-compose down
+docker-compose -f docker-compose-prod.yml up
+```
+
 ## build
 
 ```
@@ -24,6 +33,7 @@ docker container run \
 
 ```
 docker container run \
+  -e GO_ENV=prod \
   -d \
   --rm \
   --name my-blog \
@@ -36,6 +46,7 @@ docker container run \
 
 ```
 docker container run \
+  -e GO_ENV=prod \
   -d \
   --name my-blog \
   -p 7000:8000 \

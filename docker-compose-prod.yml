@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    build: ./
+    image: my-blog:latest
+    volumes:
+      - /root/programming_note:/root/programming_note
+    environment:
+      - GO_ENV=prod
+    ports:
+      - 7000:8000
+    links:
+      - redis
+    restart: always
+  redis:
+    image: redis:alpine
+    volumes:
+      - ./data:/data
