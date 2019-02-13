@@ -1,5 +1,9 @@
 # README
 
+## 本地测试
+
+go run *.go
+
 ## docker-compose
 
 ```
