@@ -4,7 +4,7 @@ services:
     build: ./
     image: my-blog:latest
     volumes:
-      - /Users/liqiang/Documents/code/programming_note:/root/programming_note
+      - /Users/liqiang/Documents/personal/code/programming_note:/root/programming_note
     environment:
       - GO_ENV=prod
     ports:
