@@ -8,7 +8,7 @@ services:
     environment:
       - GO_ENV=prod
     ports:
-      - 7000:8000
+      - 127.0.0.1:7000:8000
     links:
       - redis
     restart: always
