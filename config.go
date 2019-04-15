@@ -7,7 +7,7 @@ type config struct {
 
 var confs = map[string]*config{
 	"dev": &config{
-		blogMdPath:   "/Users/liqiang/Documents/code/programming_note",
+		blogMdPath:   "/Users/liqiang/Documents/personal/code/programming_note",
 		redisAddress: ":6379",
 	},
 	"prod": &config{
