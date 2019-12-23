@@ -4,7 +4,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	"os"
 	"path/filepath"
 	"regexp"
 	"sync"
@@ -14,14 +13,7 @@ import (
 )
 
 func main() {
-	env := os.Getenv("GO_ENV")
-	if env == "" {
-		env = "dev"
-	}
-	conf = confs[env]
-	if conf == nil {
-		log.Fatal("无效的环境变量")
-	}
+	loadConfFromEnv()
 
 	// redis
 	c, err := redis.Dial("tcp", conf.redisAddress)

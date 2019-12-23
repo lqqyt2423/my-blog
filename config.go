@@ -1,5 +1,9 @@
 package main
 
+import (
+	"os"
+)
+
 type config struct {
 	blogMdPath   string
 	redisAddress string
@@ -7,7 +11,7 @@ type config struct {
 
 var confs = map[string]*config{
 	"dev": &config{
-		blogMdPath:   "/Users/liqiang/Documents/personal/code/programming_note",
+		blogMdPath:   "/Users/liqiang/Documents/_personal/code/programming_note",
 		redisAddress: ":6379",
 	},
 	"prod": &config{
@@ -17,3 +21,21 @@ var confs = map[string]*config{
 }
 
 var conf *config
+
+func loadConfFromEnv() {
+	env := os.Getenv("GO_ENV")
+	if env == "" {
+		env = "dev"
+	}
+	conf = confs[env]
+	if conf == nil {
+		logger.Fatalln("GO_ENV is one of: dev, prod")
+	}
+	logger.Printf("env %s config loaded\n", env)
+	conf.show()
+}
+
+func (c *config) show() {
+	logger.Printf("[config] %s: %s\n", "blogMdPath", c.blogMdPath)
+	logger.Printf("[config] %s: %s\n", "redisAddress", c.redisAddress)
+}
