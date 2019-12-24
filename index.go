@@ -24,9 +24,8 @@ func (l PostList) Less(i, j int) bool {
 func (l PostList) Swap(i, j int) { l[i], l[j] = l[j], l[i] }
 
 type Index struct {
-	Title    string
-	Posts    PostList
-	SiteView int64
+	Title string
+	Posts PostList
 }
 
 type postRes struct {
@@ -75,8 +74,7 @@ func getIndexHtml() ([]byte, error) {
 	sort.Sort(posts)
 
 	buf := bytes.NewBuffer(nil)
-	sv, _ := incView("/")
-	err = postsTemplate.Execute(buf, &Index{Title: "首页", Posts: posts, SiteView: sv})
+	err = postsTemplate.Execute(buf, &Index{Title: "首页", Posts: posts})
 	if err != nil {
 		return nil, err
 	}

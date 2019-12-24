@@ -9,11 +9,4 @@ services:
       - GO_ENV=prod
     ports:
       - 127.0.0.1:7000:8000
-    links:
-      - redis
-    restart: always
-  redis:
-    image: redis:alpine
-    volumes:
-      - ./data:/data
     restart: always

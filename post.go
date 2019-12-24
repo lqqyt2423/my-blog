@@ -14,17 +14,15 @@ var postTemplate = template.Must(template.New("base.tmpl").
 	ParseFiles("template/base.tmpl", "template/post.tmpl"))
 
 type Post struct {
-	Path     string
-	Title    string
-	Content  template.HTML
-	Date     time.Time
-	score    int
-	PageView int64
+	Path    string
+	Title   string
+	Content template.HTML
+	Date    time.Time
+	score   int
 }
 
 type PostWeb struct {
 	*Post
-	SiteView int64
 }
 
 func getPostHtml(path string) ([]byte, error) {
@@ -36,9 +34,7 @@ func getPostHtml(path string) ([]byte, error) {
 	post.Date = getTimeFromPath(path)
 
 	buf := bytes.NewBuffer(nil)
-	sv, pv := incView(path)
-	post.PageView = pv
-	err = postTemplate.Execute(buf, &PostWeb{post, sv})
+	err = postTemplate.Execute(buf, &PostWeb{post})
 	if err != nil {
 		return nil, err
 	}

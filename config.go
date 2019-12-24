@@ -5,18 +5,18 @@ import (
 )
 
 type config struct {
-	blogMdPath   string
-	redisAddress string
+	blogMdPath string
+	listenAt   string
 }
 
 var confs = map[string]*config{
 	"dev": &config{
-		blogMdPath:   "/Users/liqiang/Documents/_personal/code/programming_note",
-		redisAddress: ":6379",
+		blogMdPath: "/Users/liqiang/Documents/_personal/code/programming_note",
+		listenAt:   ":8000",
 	},
 	"prod": &config{
-		blogMdPath:   "/root/programming_note",
-		redisAddress: "redis:6379",
+		blogMdPath: "/root/programming_note",
+		listenAt:   ":7000",
 	},
 }
 
@@ -37,5 +37,5 @@ func loadConfFromEnv() {
 
 func (c *config) show() {
 	logger.Printf("[config] %s: %s\n", "blogMdPath", c.blogMdPath)
-	logger.Printf("[config] %s: %s\n", "redisAddress", c.redisAddress)
+	logger.Printf("[config] %s: %s\n", "listenAt", c.listenAt)
 }

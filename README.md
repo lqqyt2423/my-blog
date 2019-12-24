@@ -6,7 +6,7 @@
 go mod init lqqyt2423/go_blog
 go list -m all
 export GOPROXY=https://goproxy.io
-go get github.com/gomodule/redigo/redis
+go get gopkg.in/russross/blackfriday.v2
 
 go mod tidy
 

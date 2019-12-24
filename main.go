@@ -8,29 +8,16 @@ import (
 	"regexp"
 	"sync"
 	"time"
-
-	"github.com/gomodule/redigo/redis"
 )
 
 func main() {
 	loadConfFromEnv()
 
-	// redis
-	c, err := redis.Dial("tcp", conf.redisAddress)
-	if err != nil {
-		log.Fatal(err)
-	}
-	redisConn = c
-	defer c.Close()
-
 	http.HandleFunc("/", router)
-	log.Fatal(http.ListenAndServe(":8000", nil))
+	log.Fatal(http.ListenAndServe(conf.listenAt, nil))
 }
 
 var mu sync.Mutex
-
-// redis connection
-var redisConn redis.Conn
 
 // 文章详情页路由正则
 var postRegexp = regexp.MustCompile(`^/post/(2\d{7}(\w|-)+)\.html$`)
@@ -108,29 +95,4 @@ func getTimeFromPath(path string) time.Time {
 	dateStr := postDateRegexp.FindString(path)
 	date, _ := time.Parse("20060102", dateStr)
 	return date
-}
-
-// 根据 path 递增浏览量并返回之后的浏览量
-// 如果 path 传空则只递增全站浏览量
-func incView(path string) (site, page int64) {
-	key := ""
-	if path != "" {
-		key = "blog:" + path
-	}
-	mu.Lock()
-	redisConn.Send("INCR", "blog:site-view")
-	if key != "" {
-		redisConn.Send("INCR", key)
-	}
-	res, err := redisConn.Do("")
-	mu.Unlock()
-	if err != nil {
-		log.Println("incView error:", err)
-		return
-	}
-	site = res.([]interface{})[0].(int64)
-	if key != "" {
-		page = res.([]interface{})[1].(int64)
-	}
-	return
 }
