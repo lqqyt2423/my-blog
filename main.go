@@ -2,7 +2,6 @@ package main
 
 import (
 	"html/template"
-	"log"
 	"net/http"
 	"path/filepath"
 	"regexp"
@@ -14,7 +13,7 @@ func main() {
 	loadConfFromEnv()
 
 	http.HandleFunc("/", router)
-	log.Fatal(http.ListenAndServe(conf.listenAt, nil))
+	logger.Fatal(http.ListenAndServe(conf.listenAt, nil))
 }
 
 var mu sync.Mutex
@@ -37,6 +36,7 @@ var postDateRegexp = regexp.MustCompile(`2\d{7}`)
 var notFoundTemplate = template.Must(template.ParseFiles("template/base.tmpl", "template/404.tmpl"))
 
 func router(w http.ResponseWriter, req *http.Request) {
+	method := req.Method
 	path := req.URL.Path
 	status := http.StatusOK
 
@@ -44,34 +44,36 @@ func router(w http.ResponseWriter, req *http.Request) {
 	defer func(start time.Time) {
 		cost := time.Since(start)
 		cost = cost.Round(time.Millisecond)
-		log.Printf("%v %v %v %v\n", req.Method, req.URL, status, cost)
+		logger.Printf("%v %v %v %v\n", method, req.URL, status, cost)
 	}(time.Now())
 
 	// 首页
-	if path == "/" {
+	if method == "GET" && path == "/" {
 		content, err := getIndexHtml()
 		if err == nil {
 			w.Write(content)
 			return
 		}
-		log.Println(err)
+		logger.Println(err)
 	}
 
 	// 文章详情页
-	if match := postRegexp.MatchString(path); match {
-		name := postRegexp.FindStringSubmatch(path)[1]
-		filename := name + ".md"
-		fPath := filepath.Join(conf.blogMdPath, filename)
-		content, err := getPostHtml(fPath)
-		if err == nil {
-			w.Write(content)
-			return
+	if method == "GET" {
+		if match := postRegexp.MatchString(path); match {
+			name := postRegexp.FindStringSubmatch(path)[1]
+			filename := name + ".md"
+			fPath := filepath.Join(conf.blogMdPath, filename)
+			content, err := getPostHtml(fPath)
+			if err == nil {
+				w.Write(content)
+				return
+			}
+			logger.Println(err)
 		}
-		log.Println(err)
 	}
 
 	// search
-	if path == "/search" {
+	if method == "GET" && path == "/search" {
 		if q := req.URL.Query().Get("q"); q != "" {
 			content, err := getSearchHtml(q)
 			if err == nil {
