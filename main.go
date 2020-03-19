@@ -2,21 +2,23 @@ package main
 
 import (
 	"html/template"
+	"lqqyt2423/go_blog/article"
 	"net/http"
-	"path/filepath"
 	"regexp"
-	"sync"
 	"time"
 )
+
+var source article.Article
 
 func main() {
 	loadConfFromEnv()
 
+	source = &article.Fs{}
+	source.Init(conf.blogMdPath)
+
 	http.HandleFunc("/", router)
 	logger.Fatal(http.ListenAndServe(conf.listenAt, nil))
 }
-
-var mu sync.Mutex
 
 // 文章详情页路由正则
 var postRegexp = regexp.MustCompile(`^/post/(2\d{7}(\w|-)+)\.html$`)
@@ -49,7 +51,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 
 	// 首页
 	if method == "GET" && path == "/" {
-		content, err := getIndexHtml()
+		content, err := source.GetAll()
 		if err == nil {
 			w.Write(content)
 			return
@@ -61,9 +63,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 	if method == "GET" {
 		if match := postRegexp.MatchString(path); match {
 			name := postRegexp.FindStringSubmatch(path)[1]
-			filename := name + ".md"
-			fPath := filepath.Join(conf.blogMdPath, filename)
-			content, err := getPostHtml(fPath)
+			content, err := source.Get(name)
 			if err == nil {
 				w.Write(content)
 				return
@@ -75,7 +75,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 	// search
 	if method == "GET" && path == "/search" {
 		if q := req.URL.Query().Get("q"); q != "" {
-			content, err := getSearchHtml(q)
+			content, err := source.Search(q)
 			if err == nil {
 				w.Write(content)
 				return
