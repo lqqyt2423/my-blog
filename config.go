@@ -27,11 +27,21 @@ func loadConfFromEnv() {
 	if env == "" {
 		env = "dev"
 	}
-	conf = confs[env]
-	if conf == nil {
-		logger.Fatalln("GO_ENV is one of: dev, prod")
+
+	if env != "dev" && env != "prod" {
+		logger.Fatalln("GO_ENV should be one of: dev, prod")
 	}
+
+	conf = confs[env]
 	logger.Printf("env %s config loaded\n", env)
+
+	if blogMdPath := os.Getenv("blog_path"); blogMdPath != "" {
+		conf.blogMdPath = blogMdPath
+	}
+	if listenAt := os.Getenv("port"); listenAt != "" {
+		conf.listenAt = ":" + listenAt
+	}
+
 	conf.show()
 }
 
