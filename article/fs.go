@@ -30,9 +30,9 @@ func timeFormat(t time.Time) string {
 	return t.Format("2006年01月02日")
 }
 
-var postTemplate = template.Must(template.New("../base.tmpl").
+var postTemplate = template.Must(template.New("base.tmpl").
 	Funcs(template.FuncMap{"format": timeFormat}).
-	ParseFiles("../template/base.tmpl", "../template/post.tmpl"))
+	ParseFiles("template/base.tmpl", "template/post.tmpl"))
 
 // Post struct
 type Post struct {
@@ -119,9 +119,9 @@ type postRes struct {
 	err  error
 }
 
-var postsTemplate = template.Must(template.New("../base.tmpl").
+var postsTemplate = template.Must(template.New("base.tmpl").
 	Funcs(template.FuncMap{"format": timeFormat}).
-	ParseFiles("../template/base.tmpl", "../template/index.tmpl"))
+	ParseFiles("template/base.tmpl", "template/index.tmpl"))
 
 func getPost(notePath string, filename string, c chan<- postRes) {
 	path := filepath.Join(notePath, filename)
@@ -196,9 +196,9 @@ func getIndexHTML(notePath string) ([]byte, error) {
 // Search
 // ==============================
 
-var searchTemplate = template.Must(template.New("../base.tmpl").
+var searchTemplate = template.Must(template.New("base.tmpl").
 	Funcs(template.FuncMap{"format": timeFormat}).
-	ParseFiles("../template/base.tmpl", "../template/search.tmpl"))
+	ParseFiles("template/base.tmpl", "template/search.tmpl"))
 
 // Search struct
 type Search struct {
