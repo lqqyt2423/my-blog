@@ -21,7 +21,7 @@ go mod 在本地的缓存文件夹为 GOPATH/pkg/mod
 go run *.go
 
 make
-./blog
+./go_blog
 ```
 
 ## docker-compose
@@ -30,52 +30,10 @@ make
 docker-compose build
 docker-compose up
 docker-compose down
-docker-compose -f docker-compose-prod.yml up
-docker-compose -f docker-compose-prod.yml up -d
 ```
 
 ## build
 
 ```bash
-docker image build -t my-blog .
-```
-
-## run
-
-### dev
-
-```bash
-docker container run \
-  -d \
-  --rm \
-  --name my-blog \
-  -p 7000:8000 \
-  --volume /Users/liqiang/Documents/code/programming_note:/root/programming_note \
-  my-blog
-```
-
-### prod test
-
-```bash
-docker container run \
-  -e GO_ENV=prod \
-  -d \
-  --rm \
-  --name my-blog \
-  -p 7000:8000 \
-  --volume /root/programming_note:/root/programming_note \
-  my-blog
-```
-
-### prod
-
-```bash
-docker container run \
-  -e GO_ENV=prod \
-  -d \
-  --name my-blog \
-  -p 7000:8000 \
-  --volume /root/programming_note:/root/programming_note \
-  --restart=always \
-  my-blog
+docker image build -t go_blog .
 ```

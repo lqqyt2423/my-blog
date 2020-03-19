@@ -2,11 +2,11 @@ version: '3'
 services:
   app:
     build: ./
-    image: my-blog:latest
+    image: go_blog:latest
     volumes:
-      - /Users/liqiang/Documents/personal/code/programming_note:/root/programming_note
+      - ${blog_path}:/root/programming_note
     environment:
       - GO_ENV=prod
     ports:
-      - 127.0.0.1:7000:8000
+      - 7000:7000
     restart: always

@@ -1,5 +1,5 @@
-blog: main.go logger.go config.go index.go post.go search.go
-	go build -o blog main.go logger.go config.go index.go post.go search.go
+go_blog: *.go article/*.go
+	go build
 
 clean:
-	rm blog
+	rm go_blog
