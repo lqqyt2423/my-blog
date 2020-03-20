@@ -298,8 +298,8 @@ type Fs struct {
 }
 
 // Init fs config
-func (fs *Fs) Init(notePath string) {
-	fs.NotePath = notePath
+func (fs *Fs) Init(notePath interface{}) {
+	fs.NotePath = notePath.(string)
 }
 
 // Get article detail html
