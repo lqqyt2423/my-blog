@@ -4,9 +4,9 @@
 {{range .Posts}}
 <p class="mono-font">
   <span class="margin-right-10 gray">{{.Date | format}}</span>
-  <a href="/post/{{.Path}}">{{.Title}}</a>
+  <a href="/blog/post/{{.Path}}">{{.Title}}</a>
 </p>
 {{else}}
-<p><a href="/">返回首页</a></p>
+<p><a href="/blog/">返回首页</a></p>
 {{end}}
 {{end}}

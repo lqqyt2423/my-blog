@@ -21,7 +21,7 @@ func main() {
 }
 
 // 文章详情页路由正则
-var postRegexp = regexp.MustCompile(`^/post/(2\d{7}(\w|-)+)\.html$`)
+var postRegexp = regexp.MustCompile(`^/blog/post/(2\d{7}(\w|-)+)\.html$`)
 
 // 文章文件名正则
 var postFileRegexp = regexp.MustCompile(`^2\d{7}(\w|-)+\.md$`)
@@ -50,7 +50,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 	}(time.Now())
 
 	// 首页
-	if method == "GET" && path == "/" {
+	if method == "GET" && (path == "/blog" || path == "/blog/") {
 		content, err := source.GetAll()
 		if err == nil {
 			w.Write(content)
@@ -73,7 +73,7 @@ func router(w http.ResponseWriter, req *http.Request) {
 	}
 
 	// search
-	if method == "GET" && path == "/search" {
+	if method == "GET" && path == "/blog/search" {
 		if q := req.URL.Query().Get("q"); q != "" {
 			content, err := source.Search(q)
 			if err == nil {
