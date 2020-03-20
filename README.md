@@ -24,16 +24,17 @@ make
 ./go_blog
 ```
 
+## docker
+
+```bash
+docker build -t go_blog .
+docker run --rm go_blog
+```
+
 ## docker-compose
 
 ```bash
 docker-compose build
 docker-compose up
 docker-compose down
-```
-
-## build
-
-```bash
-docker image build -t go_blog .
 ```

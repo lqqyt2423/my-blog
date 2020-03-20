@@ -1,12 +1,12 @@
-FROM golang:1.11
-RUN go get -d -v gopkg.in/russross/blackfriday.v2
-WORKDIR /go/src/lqqyt2423/go_blog
+FROM golang:1.13
+WORKDIR /root
 COPY . .
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo
 
 FROM alpine:latest
 WORKDIR /root
-COPY . .
-COPY --from=0 /go/src/lqqyt2423/go_blog/go_blog .
+COPY template ./template
+COPY --from=0 /root/go_blog .
 CMD ["./go_blog"]
 EXPOSE 7000
