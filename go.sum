@@ -1,4 +1,6 @@
 github.com/shurcooL/sanitized_anchor_name v1.0.0 h1:PdmoCO6wvbs+7yrJyMORt4/BmY5IYyJwS/kOiWx8mHo=
 github.com/shurcooL/sanitized_anchor_name v1.0.0/go.mod h1:1NzhyTcUVG4SuEtjjoZeVRXNmyL/1OwPU0+IJeTBvfc=
+github.com/tidwall/tinylru v1.0.2 h1:W4mp7iUz4cnVMqAvWy2zbzC35ASv5sqdyyEjoQKKBFg=
+github.com/tidwall/tinylru v1.0.2/go.mod h1:HDVL7TsWeezQ4g44Um84TOVBMFcq7Xa9giqNc805KJ8=
 gopkg.in/russross/blackfriday.v2 v2.0.0 h1:+FlnIV8DSQnT7NZ43hcVKcdJdzZoeCmJj4Ql8gq5keA=
 gopkg.in/russross/blackfriday.v2 v2.0.0/go.mod h1:6sSBNz/GtOm/pJTuh5UmBK2ZHfmnxGbl2NZg1UliSOI=

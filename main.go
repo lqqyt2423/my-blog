@@ -13,7 +13,7 @@ var source article.Article
 func main() {
 	loadConfFromEnv()
 
-	source = &article.Fs{}
+	source = &article.Cache{}
 	source.Init(conf.blogMdPath)
 
 	http.HandleFunc("/", router)
